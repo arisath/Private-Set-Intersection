@@ -1,6 +1,6 @@
 # Private-Set-Intersection
 
-###Important: The program requires the Java Cryptography Extension (JCE) as well as the apache.commons.codec jar.
+**Important:** The program requires the Java Cryptography Extension (JCE) as well as the apache.commons.codec jar.
 
 Implementing a private set intersection protocol in Java.
 
