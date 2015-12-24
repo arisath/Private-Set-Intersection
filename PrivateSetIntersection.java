@@ -6,9 +6,9 @@ public class PrivateSetIntersection
     {
         try
         {
-            ArrayList<Entry> serverEntries = Server.getEntries("alice.txt");
+            ArrayList<Entry> serverEntries = Server.getEntries("server.txt");
 
-            ArrayList<Entry> clientEntries = Client.getEntries("bob.txt");
+            ArrayList<Entry> clientEntries = Client.getEntries("client.txt");
 
             ArrayList<Entry> serverEncryptedEntries = new ArrayList<Entry>();
 
