@@ -16,7 +16,7 @@ public class PrivateSetIntersection
             {
                 serverEncryptedEntries.add(Server.encryptAesCbc(e));
             }
-            
+
            ArrayList<Entry> matches= Client.checkForCommonEntries(clientEntries,serverEncryptedEntries);
 
            Client.printCommonEntriesData(matches,clientEntries);
