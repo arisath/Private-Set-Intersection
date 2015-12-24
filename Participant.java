@@ -1,5 +1,6 @@
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
+
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -108,8 +109,6 @@ class Server extends Participant
 
             String md5name = entry.getMd5();
 
-            String sha1name = entry.getSha1();
-
             byte[] aesKey = md5name.getBytes("UTF-8"); //key
 
             byte[] str = entry.getData().getBytes("UTF-8");   //plaintext
@@ -124,9 +123,17 @@ class Server extends Participant
 
             String encryptedValue = new String(encryptedByteValue);
 
-            Entry encryptedEntry = new Entry(md5name, sha1name, initializationVector, encryptedValue);
+            entry.setIV(initializationVector);
 
-            return encryptedEntry;
+            entry.setData(encryptedValue);
+
+            byte[] hmac = computeHMac(entry);
+
+            entry.setHmac(hmac);
+
+            entry.setName(null);
+
+            return entry;
         }
         catch (NoSuchAlgorithmException e)
         {
