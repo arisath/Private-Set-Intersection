@@ -8,7 +8,7 @@ The client wants to learn the intersection of the two sets without revealing any
 
 In our implementation both the client and the server have a list of unique names (client.txt, server.txt), while the server has also some associated data for each name.
 
-The protocol works as follows:
+**The protocol works as follows:**
 
 The server computes the MD5 and SHA-1 hash functions over each name of his entries. Next, he encrypts the associated data of each entry using AES-128 in CBC mode and an HMAC over the encrypted data using the output of the MD5 hash function as the key. He then sends to the client the output of the SHA-1 function along with their encrypted data and their HMACs.
 
