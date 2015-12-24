@@ -1,5 +1,7 @@
 # Private-Set-Intersection
 
+*Important*: The program requires the Java Cryptography Extension (JCE) as well as the apache.commons.codec jar.
+
 Implementing a private set intersection protocol in Java.
 
 The scheme consists of two parties, i.e., a client and a server. Both the client and the server have a set of entries while the server also has some associated data for each entry.
