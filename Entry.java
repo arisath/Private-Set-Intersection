@@ -80,10 +80,10 @@ public class Entry
     {
         return hmac;
     }
-    
+
     protected void setHmac(byte[] hmac)
     {
         this.hmac = hmac;
     }
-    
+
 }
