@@ -26,17 +26,6 @@ public class Entry
         this.data = data;
     }
 
-    Entry(String md5, String sha1, byte[] IV, String data)
-    {
-        this.md5 = md5;
-
-        this.sha1 = sha1;
-
-        this.IV = IV;
-
-        this.data = data;
-    }
-
     public String getName()
     {
         return name;
@@ -91,9 +80,10 @@ public class Entry
     {
         return hmac;
     }
-
+    
     protected void setHmac(byte[] hmac)
     {
         this.hmac = hmac;
     }
+    
 }
