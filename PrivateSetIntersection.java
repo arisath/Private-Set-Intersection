@@ -14,15 +14,9 @@ public class PrivateSetIntersection
 
             for (Entry e : serverEntries)
             {
-                serverEncryptedEntries.add( Server.encryptAesCbc(e));
+                serverEncryptedEntries.add(Server.encryptAesCbc(e));
             }
-
-            for(Entry e : serverEncryptedEntries)
-            {
-                Server.computeHMac(e);
-
-            }
-
+            
            ArrayList<Entry> matches= Client.checkForCommonEntries(clientEntries,serverEncryptedEntries);
 
            Client.printCommonEntriesData(matches,clientEntries);
