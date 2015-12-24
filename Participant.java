@@ -1,6 +1,5 @@
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
-
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -231,24 +230,24 @@ class Client extends Participant
         return null;
     }
 
-    static ArrayList<Entry> checkForCommonEntries(ArrayList<Entry> bobEntries, ArrayList<Entry> aliceEntries) throws IOException
+    static ArrayList<Entry> checkForCommonEntries(ArrayList<Entry> clientEntries, ArrayList<Entry> serverEntries) throws IOException
     {
         try
         {
             ArrayList<Entry> commonEntries = new ArrayList<Entry>();
 
-            for (Entry bobentry : bobEntries)
+            for (Entry bobentry : clientEntries)
             {
                 bobentry.setSha1(sha1Hash(bobentry.getName()));
             }
 
-            for (Entry bobEntry : bobEntries)
+            for (Entry bobEntry : clientEntries)
             {
-                for (Entry aliceEntry : aliceEntries)
+                for (Entry serverEntry : serverEntries)
                 {
-                    if (bobEntry.getSha1().equals(aliceEntry.getSha1()))
+                    if (bobEntry.getSha1().equals(serverEntry.getSha1()))
                     {
-                        commonEntries.add(aliceEntry);
+                        commonEntries.add(serverEntry);
                     }
                 }
             }
