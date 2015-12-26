@@ -11,9 +11,18 @@ import java.security.spec.InvalidParameterSpecException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-
-public class Participant
+/**
+ * The Participant class represents an entitity participating
+ * in the private set intersection scheme
+ */
+public abstract class Participant
 {
+    /**
+     * Returns the name of the entry
+     * @param line
+     * @return
+     * @throws IOException
+     */
     static String getName(String line) throws IOException
     {
         String[] entry = line.split(" ");
@@ -23,15 +32,11 @@ public class Participant
         return name;
     }
 
-    static String getAssociatedData(String line) throws IOException
-    {
-        String[] entry = line.split(" ");
-
-        String associatedData = entry[1];
-
-        return associatedData;
-    }
-
+    /**
+     * Returns the output of the SHA-1 hash function over the input
+     * @param input
+     * @return
+     */
     static String sha1Hash(String input)
     {
         String digest = DigestUtils.sha1Hex(input);
@@ -39,6 +44,11 @@ public class Participant
         return digest;
     }
 
+    /**
+     * Returns the output of the MD5 hash function over the input
+     * @param input
+     * @return
+     */
     static String md5Hash(String input)
     {
         String digest = DigestUtils.md5Hex(input);
@@ -49,8 +59,36 @@ public class Participant
 
 }
 
+/**
+ * Represents the server participating in the private set intersection shceme
+ * The server hash a list of entries, each entry includes a name and some data
+ * The server wants to inform the client about entries they have in common and their associated data,
+ * but without revealing to the client any entries outside the intersection
+ */
 class Server extends Participant
 {
+    /**
+     * Returns the data associated with an entry
+     * @param line
+     * @return
+     * @throws IOException
+     */
+    static String getAssociatedData(String line) throws IOException
+    {
+        String[] entry = line.split(" ");
+
+        String associatedData = entry[1];
+
+        return associatedData;
+    }
+
+    /**
+     * Returns an arraylist of type Entry with all the entries included
+     * in the input file
+     * @param filename
+     * @return
+     * @throws IOException
+     */
     static ArrayList<Entry> getEntries(String filename) throws IOException
     {
         FileReader fileReader;
@@ -94,7 +132,15 @@ class Server extends Participant
         return null;
     }
 
-    static Entry encryptAesCbc(Entry entry)
+    /**
+     * Encrypts the associated data of the input entry with AES-128 in CBC mode
+     * using the output of the MD5 hash function over the name of the entry as the key
+     * Computes the H-MAC over the encrypted associated data using the output of the
+     * MD5 hash function over the name of the entry as the key
+     * @param entry
+     * @return
+     */
+    static Entry encryptAndHmac(Entry entry)
     {
         try
         {
@@ -126,7 +172,7 @@ class Server extends Participant
 
             entry.setData(encryptedValue);
 
-            byte[] hmac = computeHMac(entry);
+            byte[] hmac = computeHmac(entry);
 
             entry.setHmac(hmac);
 
@@ -169,7 +215,13 @@ class Server extends Participant
         return null;
     }
 
-    static byte[] computeHMac(Entry encryptedEntry)
+    /**
+     * Computes the H-MAC over the encrypted associated data of the input entry
+     * using the output of the MD5 hash function over the name of the entry as the key
+     * @param encryptedEntry
+     * @return
+     */
+    static byte[] computeHmac(Entry encryptedEntry)
     {
         try
         {
@@ -197,6 +249,12 @@ class Server extends Participant
     }
 }
 
+/**
+ * Represents the client participating in the private set intersection shceme
+ * The client hash a list of entries and wishes to learn the intersection of these entries
+ * with the entries stored in a server as well as the data associated with each common entry
+ * but without revealing to the server any entries outside the intersection
+ */
 class Client extends Participant
 {
     static ArrayList<Entry> getEntries(String filename) throws IOException
@@ -236,6 +294,14 @@ class Client extends Participant
         return null;
     }
 
+    /**
+     * Returns an arraylist with the entries included in the intersection of two sets
+     * based on their SHA-1 fields
+     * @param clientEntries
+     * @param serverEntries
+     * @return
+     * @throws IOException
+     */
     static ArrayList<Entry> checkForCommonEntries(ArrayList<Entry> clientEntries, ArrayList<Entry> serverEntries) throws IOException
     {
         try
@@ -266,7 +332,13 @@ class Client extends Participant
         return null;
     }
 
-
+    /**
+     * Decrypts the associated data of the input entry using AES-128 in CBC mode
+     * and the MD5 input parameter as the key
+     * @param encryptedEntry
+     * @param md5
+     * @return
+     */
     static byte[] decryptEntry(Entry encryptedEntry, String md5)
     {
         try
@@ -321,6 +393,13 @@ class Client extends Participant
         return null;
     }
 
+    /**
+     * Verifying the HMAC over the encrypted data of the input entry using the
+     * md5 input parameter as the key
+     * @param encryptedEntry
+     * @param md5
+     * @return
+     */
     static boolean verifyMac(Entry encryptedEntry, String md5)
     {
         try
@@ -340,7 +419,8 @@ class Client extends Participant
             if (Arrays.equals(encryptedEntry.getHmac(), rawHmac))
             {
                 return true;
-            } else
+            }
+            else
             {
                 return false;
             }
@@ -356,7 +436,12 @@ class Client extends Participant
         return false;
     }
 
-    static protected void printCommonEntriesData(ArrayList<Entry> matches, ArrayList<Entry> bobEntries)
+    /**
+     * Prints the entries included in the intersections of two sets and their associated data
+     * @param matches
+     * @param bobEntries
+     */
+    static protected void getCommonEntriesAndTheirData(ArrayList<Entry> matches, ArrayList<Entry> bobEntries)
     {
         for (Entry entry : bobEntries)
         {
