@@ -14,4 +14,4 @@ The server computes the MD5 and SHA-1 hash functions over each name of his entri
 
 The client computes the SHA-1 hash function over his entries and compares the output with the hashed entries he received from the server. If he detects a match, he computes the MD5 over the corresponding name and uses it as a key to verify the HMAC. If the HMAC is successfully verified he then proceeds with decrypting the associated data using the MD5 output as a key.
 
-**Important:** The program requires the Java Cryptography Extension (JCE) as well as the apache.commons.codec jar.
+**Important:** The program requires the Java Cryptography Extension (JCE).
