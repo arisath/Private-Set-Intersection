@@ -60,7 +60,7 @@ public abstract class Participant
 }
 
 /**
- * Represents the server participating in the private set intersection shceme
+ * Represents the server participating in the private set intersection scheme
  * The server hash a list of entries, each entry includes a name and some data
  * The server wants to inform the client about entries they have in common and their associated data,
  * but without revealing to the client any entries outside the intersection
