@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * The Participant class represents an entitity participating
+ * The Participant class represents an entity participating
  * in the private set intersection scheme
  */
 public abstract class Participant
@@ -91,15 +91,15 @@ class Server extends Participant
      */
     static ArrayList<Entry> getEntries(String filename) throws IOException
     {
-        FileReader fileReader;
-
         BufferedReader br = null;
 
         try
         {
-            fileReader = new FileReader(new File(filename));
+            ClassLoader classloader = Thread.currentThread().getContextClassLoader();
 
-            br = new BufferedReader(fileReader);
+            InputStream is = classloader.getResourceAsStream(filename);
+
+            br = new BufferedReader(new InputStreamReader(is));
 
             ArrayList<Entry> entries = new ArrayList<Entry>();
 
@@ -259,15 +259,15 @@ class Client extends Participant
 {
     static ArrayList<Entry> getEntries(String filename) throws IOException
     {
-        FileReader fileReader;
-
         BufferedReader br = null;
 
         try
         {
-            fileReader = new FileReader(new File(filename));
+            ClassLoader classloader = Thread.currentThread().getContextClassLoader();
 
-            br = new BufferedReader(fileReader);
+            InputStream is = classloader.getResourceAsStream(filename);
+
+            br = new BufferedReader(new InputStreamReader(is));
 
             ArrayList<Entry> entries = new ArrayList<Entry>();
 

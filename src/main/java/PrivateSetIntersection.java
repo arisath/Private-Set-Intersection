@@ -1,3 +1,4 @@
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 public class PrivateSetIntersection
@@ -14,12 +15,14 @@ public class PrivateSetIntersection
 
             for (Entry e : serverEntries)
             {
-                serverEncryptedEntries.add(Server.encryptAesCbc(e));
+               serverEncryptedEntries.add(Server.encryptAndHmac(e));
+
             }
 
            ArrayList<Entry> matches= Client.checkForCommonEntries(clientEntries,serverEncryptedEntries);
 
-           Client.printCommonEntriesData(matches,clientEntries);
+           Client.getCommonEntriesAndTheirData(matches,clientEntries);
+
 
         }
         catch (Exception e)
@@ -27,4 +30,5 @@ public class PrivateSetIntersection
             e.printStackTrace();
         }
     }
+
 }
