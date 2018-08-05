@@ -23,7 +23,6 @@ public class PrivateSetIntersection
 
            Client.getCommonEntriesAndTheirData(matches,clientEntries);
 
-
         }
         catch (Exception e)
         {
